@@ -1,36 +1,107 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BarberCalendar 💈
 
-## Getting Started
+Sistema web de reservas para barbería, desarrollado inicialmente para gestionar la agenda del barbero **específico**.
 
-First, run the development server:
+El objetivo principal del proyecto es ofrecer a los clientes una experiencia de reserva sencilla, permitiéndoles seleccionar un servicio, elegir una fecha y consultar únicamente los horarios disponibles.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🎯 Objetivo
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Crear una plataforma de reservas que permita:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Consultar los servicios disponibles.
+- Seleccionar un servicio.
+- Seleccionar una fecha.
+- Mostrar únicamente los horarios disponibles.
+- Realizar una reserva con los datos del cliente.
+- Evitar reservas duplicadas o solapadas.
+- Permitir a barbero gestionar su disponibilidad y agenda.
+- Mostrar la ubicación exacta de la barbería.
+- Facilitar la navegación hasta la barbería mediante mapas.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 👤 Barbero
 
-## Learn More
+El cliente no necesita seleccionar un barbero durante el proceso de reserva.
 
-To learn more about Next.js, take a look at the following resources:
+La arquitectura interna, sin embargo, está preparada para permitir la incorporación de más barberos en futuras versiones.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📅 Sistema de disponibilidad
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+La disponibilidad no se almacena como una lista fija de horarios.
 
-## Deploy on Vercel
+El sistema calcula dinámicamente los horarios disponibles teniendo en cuenta:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Horario habitual del barbero.
+- Reservas existentes.
+- Duración estimada del servicio.
+- Bloqueos de horario.
+- Pausas.
+- Disponibilidad real del barbero.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+El barbero podrá modificar su disponibilidad desde el área administrativa.
+
+Estados de disponibilidad:
+
+- 🟢 Disponible
+- 🔴 Ocupado
+- 🟡 Pausa
+- ⚫ No disponible
+
+También podrá indicar que una cita terminó antes de lo previsto, sin afectar las reservas futuras.
+
+## ✂️ Servicios
+
+Los servicios tendrán una duración estimada configurable.
+
+Ejemplo:
+
+- Corte
+- Barba
+- Corte + Barba
+
+Las duraciones y precios serán configurables y no estarán definidos directamente dentro de la lógica de la aplicación.
+
+## 🗺️ Ubicación
+
+La aplicación contará con una sección independiente de **Ubicación**, donde el cliente podrá consultar:
+
+- Dirección exacta de la barbería.
+- Mapa.
+- Botón para obtener indicaciones.
+- Acceso a servicios de navegación como Google Maps o Waze.
+
+La ubicación exacta se configurará posteriormente.
+
+## 🛠️ Tecnologías
+
+El proyecto utiliza:
+
+- **Next.js**
+- **TypeScript**
+- **React**
+- **Tailwind CSS**
+- **Prisma**
+- **PostgreSQL**
+- **Zod**
+- **React Hook Form**
+- **date-fns**
+- **Lucide React**
+- **Leaflet / React Leaflet**
+
+## 🏗️ Arquitectura
+
+El proyecto busca mantener una separación clara entre:
+
+```text
+UI
+│
+├── Componentes
+│
+├── Lógica de negocio
+│
+├── Validaciones
+│
+├── Server Actions / API
+│
+└── Base de datos
+       │
+       └── Prisma + PostgreSQL
