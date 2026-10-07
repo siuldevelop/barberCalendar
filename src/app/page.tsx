@@ -192,14 +192,14 @@ export default function Home() {
 
       <section className="reservation-card" aria-labelledby="booking-title">
         <div className="step-label"><span>01 / DISPONIBILIDAD</span><CalendarDays size={15} /></div>
-        <h2 id="booking-title">¿Cuándo nos vemos?</h2>
+        <h2 id="booking-title">Dias de disponibilidad</h2>
         <div className="divider" />
         <div className="date-grid" aria-label="Selecciona una fecha">
           {dates.map((item) => <button className={`date-option ${selectedDate === item.dateKey ? "selected" : ""}`} key={item.dateKey} onClick={() => setSelectedDate(item.dateKey)} type="button"><span>{item.day}</span><strong>{item.date}</strong><small>{item.month}</small></button>)}
         </div>
 
         <div className="step-label second-step"><span>02 / SERVICIO</span></div>
-        <h2>¿Qué hacemos hoy?</h2>
+        <h2>Elija su servicio</h2>
         <div className="service-list" aria-label="Selecciona un servicio">
           {loadingServices && <p className="loading-message">Cargando servicios...</p>}
           {!loadingServices && services.map((item) => <button className={`service-option ${selectedService === item.id ? "selected" : ""}`} key={item.id} onClick={() => setSelectedService(item.id)} type="button">
