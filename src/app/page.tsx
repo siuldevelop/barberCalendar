@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { type FormEvent, useEffect, useState } from "react";
 import { ArrowUpRight, CalendarDays, Check, Clock3, MapPin, Moon, Sun } from "lucide-react";
 
 type ServiceOption = {
@@ -52,6 +52,11 @@ export default function Home() {
   const [loadingServices, setLoadingServices] = useState(true);
   const [loadingTimes, setLoadingTimes] = useState(false);
   const [availabilityError, setAvailabilityError] = useState("");
+  const [customerName, setCustomerName] = useState("");
+  const [customerPhone, setCustomerPhone] = useState("");
+  const [bookingMessage, setBookingMessage] = useState("");
+  const [bookingError, setBookingError] = useState("");
+  const [submittingBooking, setSubmittingBooking] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
 
   useEffect(() => {
@@ -107,6 +112,29 @@ export default function Home() {
   const service = services.find((item) => item.id === selectedService);
   const selectedDateLabel = dates.find((item) => item.dateKey === selectedDate);
 
+  async function handleBookingSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setSubmittingBooking(true);
+    setBookingMessage("");
+    setBookingError("");
+    try {
+      const response = await fetch("/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ customerName, customerPhone, serviceId: selectedService, date: selectedDate, startTime: selectedTime }),
+      });
+      const result = await response.json() as { booking?: { id: string }; error?: string };
+      if (!response.ok) throw new Error(result.error || "No fue posible crear la reserva");
+      setBookingMessage("Solicitud recibida. David confirmará tu cita pronto.");
+      setCustomerName("");
+      setCustomerPhone("");
+    } catch (error) {
+      setBookingError(error instanceof Error ? error.message : "No fue posible crear la reserva");
+    } finally {
+      setSubmittingBooking(false);
+    }
+  }
+
   return (
     <main className={`booking-page ${darkMode ? "dark-mode" : "light-mode"}`}>
       <button className="theme-toggle" type="button" aria-label={darkMode ? "Activar modo claro" : "Activar modo oscuro"} aria-pressed={darkMode} onClick={() => setDarkMode((current) => !current)}>
@@ -147,7 +175,15 @@ export default function Home() {
           {!loadingTimes && availableTimes.map((time) => <button className={selectedTime === time ? "selected" : ""} key={time} onClick={() => setSelectedTime(time)} type="button">{time}</button>)}
         </div>
         {availabilityError && <p className="availability-error">{availabilityError}</p>}
-        <button className="confirm-button" disabled={!service || !selectedTime} type="button">Confirmar mi cita <ArrowUpRight size={16} /></button>
+        <form className="booking-form" onSubmit={handleBookingSubmit}>
+          <div className="customer-fields">
+            <label><span>Nombre</span><input value={customerName} onChange={(event) => setCustomerName(event.target.value)} placeholder="Tu nombre" autoComplete="name" /></label>
+            <label><span>Teléfono</span><input value={customerPhone} onChange={(event) => setCustomerPhone(event.target.value)} placeholder="300 000 0000" autoComplete="tel" /></label>
+          </div>
+          <button className="confirm-button" disabled={!service || !selectedTime || !customerName.trim() || !customerPhone.trim() || submittingBooking} type="submit">{submittingBooking ? "Enviando..." : "Confirmar mi cita"} <ArrowUpRight size={16} /></button>
+        </form>
+        {bookingMessage && <p className="booking-success">{bookingMessage}</p>}
+        {bookingError && <p className="availability-error">{bookingError}</p>}
         <p className="selection-summary">{service?.name || "Selecciona un servicio"} · {selectedDateLabel ? `${selectedDateLabel.date} ${selectedDateLabel.month}` : "Selecciona una fecha"} · {selectedTime || "Selecciona una hora"}</p>
       </section>
 
