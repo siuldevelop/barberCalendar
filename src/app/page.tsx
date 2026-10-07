@@ -170,23 +170,25 @@ export default function Home() {
           </button>)}
         </div>
 
-        <div className="time-heading"><div className="step-label"><span>03 / HORA</span></div><small>HORA LOCAL · COT</small></div>
-        <div className="time-grid" aria-label="Selecciona una hora">
-          {loadingTimes && <p className="loading-message">Calculando horarios...</p>}
-          {!loadingTimes && availableTimes.length === 0 && <p className="loading-message">No hay horarios disponibles para esta selección.</p>}
-          {!loadingTimes && availableTimes.map((time) => <button className={selectedTime === time ? "selected" : ""} key={time} onClick={() => setSelectedTime(time)} type="button">{time}</button>)}
-        </div>
-        {availabilityError && <p className="availability-error">{availabilityError}</p>}
-        <button className="booking-reveal" disabled={!service || !selectedTime} type="button" aria-expanded={detailsOpen} onClick={() => setDetailsOpen((current) => !current)}>
+        <button className="booking-reveal service-booking-reveal" disabled={!service} type="button" aria-expanded={detailsOpen} onClick={() => setDetailsOpen((current) => !current)}>
           <span>Agendar</span>{detailsOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
         </button>
-        {detailsOpen && <form className="booking-form" onSubmit={handleBookingSubmit}>
-          <div className="booking-fields">
-            <label className="booking-field"><span>Nombre completo</span><input value={customerName} onChange={(event) => setCustomerName(event.target.value)} placeholder="Tu nombre" autoComplete="name" /></label>
-            <label className="booking-field"><span>Teléfono</span><input value={customerPhone} onChange={(event) => setCustomerPhone(event.target.value)} placeholder="300 000 0000" autoComplete="tel" /></label>
+        {detailsOpen && <div className="booking-details">
+          <div className="time-heading"><div className="step-label"><span>03 / HORA</span></div><small>HORA LOCAL · COT</small></div>
+          <div className="time-grid" aria-label="Selecciona una hora">
+            {loadingTimes && <p className="loading-message">Calculando horarios...</p>}
+            {!loadingTimes && availableTimes.length === 0 && <p className="loading-message">No hay horarios disponibles para esta selección.</p>}
+            {!loadingTimes && availableTimes.map((time) => <button className={selectedTime === time ? "selected" : ""} key={time} onClick={() => setSelectedTime(time)} type="button">{time}</button>)}
           </div>
-          <button className="confirm-button" disabled={!customerName.trim() || !customerPhone.trim() || submittingBooking} type="submit">{submittingBooking ? "Enviando..." : "Confirmar mi cita"} <ArrowUpRight size={16} /></button>
-        </form>}
+          {availabilityError && <p className="availability-error">{availabilityError}</p>}
+          <form className="booking-form" onSubmit={handleBookingSubmit}>
+            <div className="booking-fields">
+              <label className="booking-field"><span>Nombre completo</span><input value={customerName} onChange={(event) => setCustomerName(event.target.value)} placeholder="Tu nombre" autoComplete="name" /></label>
+              <label className="booking-field"><span>Teléfono</span><input value={customerPhone} onChange={(event) => setCustomerPhone(event.target.value)} placeholder="300 000 0000" autoComplete="tel" /></label>
+            </div>
+            <button className="confirm-button" disabled={!selectedTime || !customerName.trim() || !customerPhone.trim() || submittingBooking} type="submit">{submittingBooking ? "Enviando..." : "Confirmar mi cita"} <ArrowUpRight size={16} /></button>
+          </form>
+        </div>}
         {bookingMessage && <p className="booking-success">{bookingMessage}</p>}
         {bookingError && <p className="availability-error">{bookingError}</p>}
         <p className="selection-summary">{service?.name || "Selecciona un servicio"} · {selectedDateLabel ? `${selectedDateLabel.date} ${selectedDateLabel.month}` : "Selecciona una fecha"} · {selectedTime || "Selecciona una hora"}</p>
