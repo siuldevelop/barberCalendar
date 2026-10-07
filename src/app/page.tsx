@@ -1,7 +1,7 @@
 "use client";
 
 import { type FormEvent, useEffect, useState } from "react";
-import { ArrowUpRight, CalendarDays, Check, ChevronDown, ChevronUp, Clock3, MapPin, Moon, Sun } from "lucide-react";
+import { ArrowUpRight, CalendarDays, Check, ChevronDown, ChevronUp, MapPin, Moon, Sun } from "lucide-react";
 
 type ServiceOption = {
   id: string;
@@ -187,9 +187,7 @@ export default function Home() {
         <div className="eyebrow"><span /> AGENDA ONLINE</div>
         <h1 id="page-title">Agende<br /><em>su cita.</em></h1>
         <p className="intro-copy">Elige el momento que mejor te quede. Yo me encargo del resto.</p>
-        <a className="booking-cta" href="#booking-title">Dale clic aquí para agendar <ArrowUpRight size={15} /></a>
-        <div className="intro-details"><a href="#ubicacion"><MapPin size={13} strokeWidth={1.5} /> Copacabana, Antioquia</a><span><Clock3 size={13} strokeWidth={1.5} /> David Lopera · Barbería</span></div>
-        <a className="location-link" href="#ubicacion">Conoce la ubicación <ArrowUpRight size={15} /></a>
+        <div className="intro-details"><span><MapPin size={13} strokeWidth={1.5} /> Copacabana, Antioquia</span></div>
       </section>
 
       <section className="reservation-card" aria-labelledby="booking-title">
@@ -240,7 +238,6 @@ export default function Home() {
         <p className="selection-summary">{service?.name || "Selecciona un servicio"} · {selectedDateLabel ? `${selectedDateLabel.date} ${selectedDateLabel.month}` : "Selecciona una fecha"} · {selectedTime ? formatTime12Hour(selectedTime) : "Selecciona una hora"}</p>
       </section>
 
-      <section id="ubicacion" className="location-strip"><span>UBICACIÓN</span><strong>Copacabana, Antioquia</strong><small>La dirección exacta se configurará próximamente.</small></section>
     </main>
   );
 }

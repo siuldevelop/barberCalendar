@@ -17,12 +17,9 @@ button, a { -webkit-tap-highlight-color: transparent; }
 h1 { font-family: Georgia, "Times New Roman", serif; font-size: clamp(4rem, 7.6vw, 7.6rem); font-weight: 400; line-height: .79; letter-spacing: -.07em; margin: 0; }
 h1 em { color: var(--red-soft); font-style: normal; }
 .intro-copy { color: var(--page-muted); font-size: 13px; line-height: 1.7; max-width: 240px; margin: 2.1rem 0 4rem; }
-.booking-cta { display: inline-flex; align-items: center; gap: 8px; color: var(--page-ink); font-size: 11px; font-weight: 700; text-decoration: none; margin: -2rem 0 3.5rem; transition: color .2s ease, gap .2s ease; }
-.booking-cta:hover { color: var(--red-soft); gap: 11px; }
 .intro-details { display: grid; gap: 15px; color: var(--page-soft); font-size: 9px; letter-spacing: .03em; }
 .intro-details a, .intro-details span { display: flex; align-items: center; gap: 8px; }
 .intro-details a { color: inherit; text-decoration: none; }
-.location-link { display: inline-flex; align-items: center; gap: 8px; color: var(--page-ink); font-size: 11px; font-weight: 700; margin-top: 2.8rem; text-decoration: none; }
 .reservation-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 17px; color: var(--page-ink); padding: clamp(1.5rem, 3vw, 2.25rem); box-shadow: 0 25px 60px rgba(5, 18, 38, .24); width: 100%; max-width: 700px; }
 .step-label { display: flex; align-items: center; justify-content: space-between; font-size: 8px; }
 .reservation-card h2 { font-size: 16px; letter-spacing: -.02em; margin: 14px 0 0; }
@@ -74,7 +71,6 @@ h1 em { color: var(--red-soft); font-style: normal; }
 .booking-success { color: #9fc6a2; font-size: 9px; line-height: 1.5; margin: 10px 0 -3px; }
 .confirm-button { border: 0; background: var(--red); color: #ffffff; border-radius: 999px; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; margin-top: 20px; font-size: 10px; cursor: pointer; }
 .selection-summary { color: var(--page-soft); font-size: 8px; text-align: center; margin: 11px 0 -5px; }
-.location-strip { display: none; }
 
 @media (max-width: 800px) {
   .booking-page { grid-template-columns: 1fr; gap: 2.5rem; padding: 2.2rem 1.15rem 1.5rem; align-items: start; }
@@ -82,14 +78,9 @@ h1 em { color: var(--red-soft); font-style: normal; }
   .eyebrow { margin-bottom: 1.5rem; }
   h1 { font-size: clamp(3.9rem, 18vw, 6rem); }
   .intro-copy { margin: 1.6rem 0 2rem; }
-  .booking-cta { margin: 0 0 2rem; }
-  .location-link { margin-top: 1.7rem; }
   .reservation-card { max-width: none; border-radius: 15px; padding: 1.35rem; }
   .booking-fields { grid-template-columns: 1fr; gap: 9px; }
   .time-grid { grid-template-columns: repeat(2, 1fr); gap: 13px 10px; }
-  .location-strip { display: grid; gap: 7px; padding: 1rem 0 0; border-top: 1px solid color-mix(in srgb, var(--page-ink) 18%, transparent); color: var(--page-soft); font-size: 10px; }
-  .location-strip span { color: var(--red-soft); font-size: 8px; letter-spacing: .2em; font-weight: 700; }
-  .location-strip strong { color: var(--page-ink); font-size: 14px; }
 }
 
 @media (min-width: 801px) and (max-width: 1180px) {

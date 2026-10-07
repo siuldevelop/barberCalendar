@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "BarberCalendar",
-  description: "Reservas para la barbería de David Lopera",
+  description: "Reserva tu cita en la barbería",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
