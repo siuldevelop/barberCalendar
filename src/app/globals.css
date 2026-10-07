@@ -47,6 +47,9 @@ h1 em { color: #dc8068; font-style: normal; }
 .time-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 7px; }
 .time-grid button { border: 1px solid #504943; border-radius: 7px; color: #cabeb3; background: transparent; font-size: 8px; padding: 9px 3px; cursor: pointer; }
 .time-grid button.selected { color: #292522; background: #df8268; border-color: #df8268; }
+.time-grid button:disabled, .confirm-button:disabled { cursor: not-allowed; opacity: .5; }
+.loading-message, .availability-error { color: #aa9d92; font-size: 9px; margin: 3px 0; grid-column: 1 / -1; }
+.availability-error { color: #df8268; }
 .confirm-button { border: 0; background: #df8268; color: #2d2521; border-radius: 999px; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; margin-top: 20px; font-size: 10px; cursor: pointer; }
 .selection-summary { color: #85786e; font-size: 8px; text-align: center; margin: 11px 0 -5px; }
 .location-strip { display: none; }
