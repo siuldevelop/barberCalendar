@@ -1,8 +1,13 @@
+import "dotenv/config";
+import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 import prismaPackage from "@prisma/client";
 
 const { PrismaClient } = prismaPackage;
 
-const prisma = new PrismaClient();
+const adapter = new PrismaBetterSqlite3({
+  url: process.env.DATABASE_URL ?? "file:./dev.db",
+});
+const prisma = new PrismaClient({ adapter });
 
 async function main() {
   const david = await prisma.barber.upsert({
