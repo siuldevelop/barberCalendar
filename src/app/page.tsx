@@ -187,6 +187,7 @@ export default function Home() {
         <div className="eyebrow"><span /> AGENDA ONLINE</div>
         <h1 id="page-title">Agende<br /><em>su cita.</em></h1>
         <p className="intro-copy">Elige el momento que mejor te quede. Yo me encargo del resto.</p>
+        <a className="booking-cta" href="#booking-title">Dale clic aquí para agendar <ArrowUpRight size={15} /></a>
         <div className="intro-details"><a href="#ubicacion"><MapPin size={13} strokeWidth={1.5} /> Copacabana, Antioquia</a><span><Clock3 size={13} strokeWidth={1.5} /> David Lopera · Barbería</span></div>
         <a className="location-link" href="#ubicacion">Conoce la ubicación <ArrowUpRight size={15} /></a>
       </section>
