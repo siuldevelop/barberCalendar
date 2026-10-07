@@ -49,6 +49,20 @@ function formatTime12Hour(time: string) {
   return `${hour}:${String(minutes).padStart(2, "0")} ${period}`;
 }
 
+function getColombiaHour() {
+  const parts = new Intl.DateTimeFormat("en-GB", { timeZone: "America/Bogota", hour: "2-digit", hourCycle: "h23" }).formatToParts(new Date());
+  return parts.find((part) => part.type === "hour")?.value ?? "00";
+}
+
+function groupTimesByHour(times: string[]) {
+  const groups = new Map<string, string[]>();
+  times.forEach((time) => {
+    const hour = time.slice(0, 2);
+    groups.set(hour, [...(groups.get(hour) ?? []), time]);
+  });
+  return [...groups.entries()].map(([hour, hourTimes]) => ({ hour, times: hourTimes }));
+}
+
 export default function Home() {
   const [dates, setDates] = useState<DateOption[]>([]);
   const [selectedDate, setSelectedDate] = useState("");
@@ -65,6 +79,7 @@ export default function Home() {
   const [bookingError, setBookingError] = useState("");
   const [submittingBooking, setSubmittingBooking] = useState(false);
   const [detailsOpen, setDetailsOpen] = useState(false);
+  const [expandedHours, setExpandedHours] = useState<string[]>([]);
   const [darkMode, setDarkMode] = useState(true);
 
   useEffect(() => {
@@ -117,8 +132,26 @@ export default function Home() {
     return () => { cancelled = true; };
   }, [selectedDate, selectedService]);
 
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      if (availableTimes.length === 0) {
+        setExpandedHours([]);
+        return;
+      }
+
+      const availableHours = [...new Set(availableTimes.map((time) => time.slice(0, 2)))];
+      const currentHour = selectedDate === getColombiaDateKey() ? Number(getColombiaHour()) : Number(availableHours[0]);
+      const preferredHours = [currentHour, currentHour + 1]
+        .map((hour) => hour.toString().padStart(2, "0"))
+        .filter((hour) => availableHours.includes(hour));
+      setExpandedHours(preferredHours.length > 0 ? preferredHours : availableHours.slice(0, 2));
+    }, 0);
+    return () => window.clearTimeout(timer);
+  }, [availableTimes, selectedDate]);
+
   const service = services.find((item) => item.id === selectedService);
   const selectedDateLabel = dates.find((item) => item.dateKey === selectedDate);
+  const timeGroups = groupTimesByHour(availableTimes);
 
   async function handleBookingSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -185,7 +218,12 @@ export default function Home() {
           <div className="time-grid" aria-label="Selecciona una hora">
             {loadingTimes && <p className="loading-message">Calculando horarios...</p>}
             {!loadingTimes && availableTimes.length === 0 && <p className="loading-message">No hay horarios disponibles para esta selección.</p>}
-            {!loadingTimes && availableTimes.map((time) => <button className={selectedTime === time ? "selected" : ""} key={time} onClick={() => setSelectedTime(time)} type="button">{formatTime12Hour(time)}</button>)}
+            {!loadingTimes && timeGroups.map(({ hour, times }) => <div className="time-group" key={hour}>
+              <button className="time-hour-toggle" aria-expanded={expandedHours.includes(hour)} onClick={() => setExpandedHours((current) => current.includes(hour) ? current.filter((item) => item !== hour) : [...current, hour])} type="button">
+                <span>{formatTime12Hour(`${hour}:00`).replace(":00", "")}</span><ChevronDown className={expandedHours.includes(hour) ? "rotated" : ""} size={14} />
+              </button>
+              {expandedHours.includes(hour) && <div className="time-options">{times.map((time) => <button className={`time-option ${selectedTime === time ? "selected" : ""}`} key={time} onClick={() => setSelectedTime(time)} type="button">{formatTime12Hour(time)}</button>)}</div>}
+            </div>)}
           </div>
           {availabilityError && <p className="availability-error">{availabilityError}</p>}
           <form className="booking-form" onSubmit={handleBookingSubmit}>

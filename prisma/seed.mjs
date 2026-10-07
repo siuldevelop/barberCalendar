@@ -38,8 +38,8 @@ async function main() {
 
   // Example hours only; they are intentionally configurable.
   const exampleSchedule = [
-    [1, "09:00", "18:00"], [2, "09:00", "18:00"], [3, "09:00", "18:00"],
-    [4, "09:00", "18:00"], [5, "09:00", "18:00"], [6, "09:00", "14:00"],
+    [1, "09:00", "22:00"], [2, "09:00", "22:00"], [3, "09:00", "22:00"],
+    [4, "09:00", "22:00"], [5, "09:00", "22:00"], [6, "09:00", "14:00"],
   ];
 
   for (const [weekday, startTime, endTime] of exampleSchedule) {

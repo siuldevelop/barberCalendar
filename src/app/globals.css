@@ -44,9 +44,15 @@ h1 em { color: var(--red-soft); font-style: normal; }
 .most-chosen { color: var(--red-soft); font-size: 7px; white-space: nowrap; }
 .time-heading { display: flex; justify-content: space-between; align-items: end; margin: 25px 0 11px; }
 .time-heading small { color: var(--page-soft); font-size: 7px; }
-.time-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 7px; }
-.time-grid button { border: 1px solid var(--card-border); border-radius: 7px; color: var(--page-muted); background: transparent; font-size: 8px; padding: 9px 3px; cursor: pointer; }
-.time-grid button.selected { color: #ffffff; background: var(--blue); border-color: var(--blue); }
+.time-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; align-items: start; }
+.time-group { display: grid; gap: 6px; align-content: start; }
+.time-hour-toggle, .time-option { border: 1px solid var(--card-border); border-radius: 7px; color: var(--page-muted); background: transparent; font-size: 8px; cursor: pointer; }
+.time-hour-toggle { min-height: 38px; display: flex; align-items: center; justify-content: space-between; gap: 4px; padding: 8px 9px; text-align: left; }
+.time-hour-toggle:hover { border-color: var(--blue); color: var(--page-ink); }
+.time-hour-toggle .rotated { transform: rotate(180deg); }
+.time-options { display: grid; gap: 6px; }
+.time-option { padding: 8px 3px; }
+.time-option.selected { color: #ffffff; background: var(--blue); border-color: var(--blue); }
 .time-grid button:disabled, .confirm-button:disabled { cursor: not-allowed; opacity: .5; }
 .loading-message, .availability-error { color: var(--page-muted); font-size: 9px; margin: 3px 0; grid-column: 1 / -1; }
 .availability-error { color: var(--red-soft); }
@@ -75,6 +81,7 @@ h1 em { color: var(--red-soft); font-style: normal; }
   .location-link { margin-top: 1.7rem; }
   .reservation-card { max-width: none; border-radius: 15px; padding: 1.35rem; }
   .booking-fields { grid-template-columns: 1fr; gap: 9px; }
+  .time-grid { grid-template-columns: repeat(2, 1fr); }
   .location-strip { display: grid; gap: 7px; padding: 1rem 0 0; border-top: 1px solid color-mix(in srgb, var(--page-ink) 18%, transparent); color: var(--page-soft); font-size: 10px; }
   .location-strip span { color: var(--red-soft); font-size: 8px; letter-spacing: .2em; font-weight: 700; }
   .location-strip strong { color: var(--page-ink); font-size: 14px; }
