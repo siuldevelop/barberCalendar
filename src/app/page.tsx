@@ -42,6 +42,13 @@ function formatPrice(priceInCents: number | null) {
   return new Intl.NumberFormat("es-CO", { style: "currency", currency: "COP", maximumFractionDigits: 0 }).format(priceInCents / 100);
 }
 
+function formatTime12Hour(time: string) {
+  const [rawHours, minutes] = time.split(":").map(Number);
+  const hour = rawHours % 12 || 12;
+  const period = rawHours >= 12 ? "p. m." : "a. m.";
+  return `${hour}:${String(minutes).padStart(2, "0")} ${period}`;
+}
+
 export default function Home() {
   const [dates, setDates] = useState<DateOption[]>([]);
   const [selectedDate, setSelectedDate] = useState("");
@@ -178,7 +185,7 @@ export default function Home() {
           <div className="time-grid" aria-label="Selecciona una hora">
             {loadingTimes && <p className="loading-message">Calculando horarios...</p>}
             {!loadingTimes && availableTimes.length === 0 && <p className="loading-message">No hay horarios disponibles para esta selección.</p>}
-            {!loadingTimes && availableTimes.map((time) => <button className={selectedTime === time ? "selected" : ""} key={time} onClick={() => setSelectedTime(time)} type="button">{time}</button>)}
+            {!loadingTimes && availableTimes.map((time) => <button className={selectedTime === time ? "selected" : ""} key={time} onClick={() => setSelectedTime(time)} type="button">{formatTime12Hour(time)}</button>)}
           </div>
           {availabilityError && <p className="availability-error">{availabilityError}</p>}
           <form className="booking-form" onSubmit={handleBookingSubmit}>
@@ -191,7 +198,7 @@ export default function Home() {
         </div>}
         {bookingMessage && <p className="booking-success">{bookingMessage}</p>}
         {bookingError && <p className="availability-error">{bookingError}</p>}
-        <p className="selection-summary">{service?.name || "Selecciona un servicio"} · {selectedDateLabel ? `${selectedDateLabel.date} ${selectedDateLabel.month}` : "Selecciona una fecha"} · {selectedTime || "Selecciona una hora"}</p>
+        <p className="selection-summary">{service?.name || "Selecciona un servicio"} · {selectedDateLabel ? `${selectedDateLabel.date} ${selectedDateLabel.month}` : "Selecciona una fecha"} · {selectedTime ? formatTime12Hour(selectedTime) : "Selecciona una hora"}</p>
       </section>
 
       <section id="ubicacion" className="location-strip"><span>UBICACIÓN</span><strong>Copacabana, Antioquia</strong><small>La dirección exacta se configurará próximamente.</small></section>
