@@ -1,7 +1,7 @@
 "use client";
 
 import { type FormEvent, useEffect, useState } from "react";
-import { ArrowUpRight, CalendarDays, Check, Clock3, MapPin, Moon, Sun } from "lucide-react";
+import { ArrowUpRight, CalendarDays, Check, ChevronDown, ChevronUp, Clock3, MapPin, Moon, Sun } from "lucide-react";
 
 type ServiceOption = {
   id: string;
@@ -57,6 +57,7 @@ export default function Home() {
   const [bookingMessage, setBookingMessage] = useState("");
   const [bookingError, setBookingError] = useState("");
   const [submittingBooking, setSubmittingBooking] = useState(false);
+  const [detailsOpen, setDetailsOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
 
   useEffect(() => {
@@ -128,6 +129,7 @@ export default function Home() {
       setBookingMessage("Solicitud recibida. David confirmará tu cita pronto.");
       setCustomerName("");
       setCustomerPhone("");
+      setDetailsOpen(false);
     } catch (error) {
       setBookingError(error instanceof Error ? error.message : "No fue posible crear la reserva");
     } finally {
@@ -175,13 +177,16 @@ export default function Home() {
           {!loadingTimes && availableTimes.map((time) => <button className={selectedTime === time ? "selected" : ""} key={time} onClick={() => setSelectedTime(time)} type="button">{time}</button>)}
         </div>
         {availabilityError && <p className="availability-error">{availabilityError}</p>}
-        <form className="booking-form" onSubmit={handleBookingSubmit}>
-          <div className="customer-fields">
-            <label><span>Nombre</span><input value={customerName} onChange={(event) => setCustomerName(event.target.value)} placeholder="Tu nombre" autoComplete="name" /></label>
-            <label><span>Teléfono</span><input value={customerPhone} onChange={(event) => setCustomerPhone(event.target.value)} placeholder="300 000 0000" autoComplete="tel" /></label>
+        <button className="booking-reveal" disabled={!service || !selectedTime} type="button" aria-expanded={detailsOpen} onClick={() => setDetailsOpen((current) => !current)}>
+          <span>Agendar</span>{detailsOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+        </button>
+        {detailsOpen && <form className="booking-form" onSubmit={handleBookingSubmit}>
+          <div className="booking-fields">
+            <label className="booking-field"><span>Nombre completo</span><input value={customerName} onChange={(event) => setCustomerName(event.target.value)} placeholder="Tu nombre" autoComplete="name" /></label>
+            <label className="booking-field"><span>Teléfono</span><input value={customerPhone} onChange={(event) => setCustomerPhone(event.target.value)} placeholder="300 000 0000" autoComplete="tel" /></label>
           </div>
-          <button className="confirm-button" disabled={!service || !selectedTime || !customerName.trim() || !customerPhone.trim() || submittingBooking} type="submit">{submittingBooking ? "Enviando..." : "Confirmar mi cita"} <ArrowUpRight size={16} /></button>
-        </form>
+          <button className="confirm-button" disabled={!customerName.trim() || !customerPhone.trim() || submittingBooking} type="submit">{submittingBooking ? "Enviando..." : "Confirmar mi cita"} <ArrowUpRight size={16} /></button>
+        </form>}
         {bookingMessage && <p className="booking-success">{bookingMessage}</p>}
         {bookingError && <p className="availability-error">{bookingError}</p>}
         <p className="selection-summary">{service?.name || "Selecciona un servicio"} · {selectedDateLabel ? `${selectedDateLabel.date} ${selectedDateLabel.month}` : "Selecciona una fecha"} · {selectedTime || "Selecciona una hora"}</p>
