@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ArrowUpRight, CalendarDays, Check, Clock3, MapPin } from "lucide-react";
+import { ArrowUpRight, CalendarDays, Check, Clock3, MapPin, Moon, Sun } from "lucide-react";
 
 const dates = [
   { day: "LUN", date: "24", month: "JUN" }, { day: "MAR", date: "25", month: "JUN" },
@@ -19,10 +19,21 @@ export default function Home() {
   const [selectedDate, setSelectedDate] = useState("24");
   const [selectedService, setSelectedService] = useState("corte-barba");
   const [selectedTime, setSelectedTime] = useState("11:30");
+  const [darkMode, setDarkMode] = useState(true);
   const service = useMemo(() => services.find((item) => item.id === selectedService) ?? services[0], [selectedService]);
 
   return (
-    <main className="booking-page">
+    <main className={`booking-page ${darkMode ? "dark-mode" : "light-mode"}`}>
+      <button
+        className="theme-toggle"
+        type="button"
+        aria-label={darkMode ? "Activar modo claro" : "Activar modo oscuro"}
+        aria-pressed={darkMode}
+        onClick={() => setDarkMode((current) => !current)}
+      >
+        {darkMode ? <Sun size={16} /> : <Moon size={16} />}
+        <span>{darkMode ? "Modo claro" : "Modo oscuro"}</span>
+      </button>
       <section className="intro-column" aria-labelledby="page-title">
         <div className="eyebrow"><span /> AGENDA ONLINE</div>
         <h1 id="page-title">Tu momento<br /><em>empieza aquí.</em></h1>
